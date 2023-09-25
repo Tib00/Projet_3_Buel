@@ -1,4 +1,7 @@
-
+{fetch("http://localhost:5678/api/works")
+    .then(travaux => travaux.json())
+    .then (travaux => console.table(travaux))
+}
 //const categories = await fetch("http:/localhost:5678/categories")
 //const categoriesLisibles = await categories.json();
 let galerie = document.querySelector(".gallery")

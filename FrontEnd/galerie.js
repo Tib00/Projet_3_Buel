@@ -1,7 +1,3 @@
-{fetch("http://localhost:5678/api/works")
-    .then(travaux => travaux.json())
-    .then (travaux => console.table(travaux))
-}
 fetch("http://localhost:5678/api/works")
     .then(travaux => travaux.json())
     .then (travauxLisibles => {
@@ -162,3 +158,54 @@ function oeuvres(travauxLisibles){
         oeuvres(travauxLisibles);
     });
 });
+
+//Implantation des liens
+let menuNavigation = document.querySelector("header ul");
+menuNavigation.innerHTML = `
+<li><a href="#portfolio">projets</a></li>
+<li><a href="#contact">contact</a></li>
+<li><a href="login.html">login</a></li>
+<li><i class="fa-brands fa-instagram"></i></li>
+`
+
+//Vérification du token en localStorage
+if(localStorage.getItem("token") !== null){
+    console.log("Ok tu es identifié")
+
+    //Mise en place de la barre noire moche
+    let laBarreNoireMoche = document.createElement("div");
+    laBarreNoireMoche.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>     Mode édition`;
+    laBarreNoireMoche.classList.add("barreNoire")
+    let placeBarre = document.querySelector("header");
+    placeBarre.before(laBarreNoireMoche);
+
+    // Nouveau menu de navigation quand connecté
+        let menuNavigationConnect = document.querySelector("header ul");
+        menuNavigationConnect.innerHTML = `
+        <li><a href="#portfolio">projets</a></li>
+        <li><a href="#contact">contact</a></li>
+        <li><button class="logout">logout</button></li>
+        <li><i class="fa-brands fa-instagram"></i></li>
+        `
+
+    //Disparition des boutons
+    laDivDeTest.innerHTML = ``;
+
+    //Apparition du bouton 'modifier'
+    let boutonModifier = document.createElement("button");
+    boutonModifier.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
+    boutonModifier.classList.add("btn-modifier");
+
+    let placeDuBouton = document.querySelector("#portfolio h2");
+    placeDuBouton.appendChild(boutonModifier);
+
+    //Fonctionnement du bouton 'logout'
+    let baliseLogOut = document.querySelector(".logout");
+    baliseLogOut.addEventListener("click", ()=>{
+        localStorage.removeItem("token");
+        window.location.assign("index.html");
+    });
+}
+else{
+    console.log("You shall not pass !");
+}
