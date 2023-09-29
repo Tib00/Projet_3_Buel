@@ -247,6 +247,112 @@ a{
 	color: #000000;
 	font-size: 0.9em;
 }
-.btn-modifier:hover, .logout:hover{
+.btn-modifier:hover, .logout:hover, .fermeTaModale:hover, .poubelle:hover, .boutonAjouter:hover{
 	cursor: pointer;
+}
+/*************************************** MODALE ! ************************/
+.modaleContainer{
+	position:fixed;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+.modale.overlayModale {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Couleur de fond grise avec une opacité de 30% */
+    z-index: 999; /* Assure que la modal est au-dessus de tout le reste */
+}
+
+.mangeTaModale{
+	width: 95%;
+	height: 688px;
+	width: 630px;
+	background-color: #FFFEF8;
+	border: #FFFEF8 1px solid;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.fermeTaModale{
+	background-color: #FFFEF8;
+	border: none;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+.modaleGalerie{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
+	grid-template-rows: 125px 125px 125px;
+	gap: 5px;
+}
+
+h3{
+	color: #000;
+	text-align: center;
+	font-family: Work Sans;
+	font-size: 26px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	position: absolute;
+	top: 60px;
+}
+.ligneNoire{
+	width: 75%;
+	border-bottom: 1px #B3B3B3 solid;
+	position: absolute;
+	top: 570px;
+}
+.boutonAjouter{
+	position: absolute;
+	top: 607px;
+	height: 36px;
+	width: 240px;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	border: 1px #1D6154 solid;
+	text-align: center;
+	border-radius: 60px ;
+}
+.cardModale {
+    position: relative;
+    display: inline-block; /* Pour permettre aux éléments de s'empiler correctement */
+    margin: 10px; /* Espace entre les images */
+}
+.cardImage {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+.poubelle {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0); 
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.poubelle i {
+    font-size: 16px; /* Taille de l'icône de la poubelle */
 }
