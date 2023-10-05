@@ -1,114 +1,140 @@
-{fetch("http://localhost:5678/api/works")
-    .then(travaux => travaux.json())
-    .then (travaux => console.table(travaux))
-}
-//const categories = await fetch("http:/localhost:5678/categories")
-//const categoriesLisibles = await categories.json();
-let galerie = document.querySelector(".gallery")
-    galerie.innerHTML = '';
+let modaleOuverte = false;
+    // Fonctionnement du bouton modifier
+    let baliseModifier = document.querySelector(".btn-modifier")
+    baliseModifier.addEventListener("click", () => {
+        if (!modaleOuverte) {
+            const modaleConteneur = document.createElement("div")
+            modaleConteneur.classList.add("modale", "modaleConteneur")
+            modaleConteneur.innerHTML = `
+                <div class="overlayModale">
+                    <div class="mangeTaModale pageModaleUn">
+                        <button class="fermeTaModale"><i class="fa-solid fa-xmark fa-xl"></i></button>
+                        <h3>Galerie photo</h3>
+                        <div class="modaleGalerie"></div>
+                        <div class="ligneNoire"></div>
+                        <button class="boutonAjouter">Ajouter une photo</button>
+                    </div>
+                </div>
+            `;
 
-//async function travaux(){
-//    const travaux = await fetch("http://localhost:5678/api/works")
-//    const travauxLisibles = await travaux.json();
-//
-//
-//    const card = document.createElement("figure");
-//    const cardTitle = document.createElement("figcaption");
-//    cardTitle.textContent = travauxLisibles[0].title;
-//    const cardImage = document.createElement("img");
-//    cardImage.src = travauxLisibles[0].imageUrl;
-//
-//    card.appendChild(cardImage);
-//    card.appendChild(cardTitle);
-//
-//    galerie.appendChild(card);
-//
-//};
-//
-//travaux();
-//async function travaux(){
-//        const travaux = await fetch("http://localhost:5678/api/works")
-//        const travauxLisibles = await travaux.json();
-//        return(travauxLisibles)
-//}
-//travaux();
-//
-//for (let i = 0; i < travauxLisibles.length; i++) {
-//    function ouvrages(travauxLisibles){
-//
-//        const card = document.createElement("figure");
-//        const cardTitle = document.createElement("figcaption");
-//        cardTitle.textContent = travauxLisibles[i].title;
-//        const cardImage = document.createElement("img");
-//        cardImage.src = travauxLisibles[i].imageUrl;
-//    
-//        card.appendChild(cardImage);
-//        card.appendChild(cardTitle);
-//    
-//        galerie.appendChild(card);
-//
-//    }
-//    ouvrages();
-//};
+            const placeModale = document.getElementById("introduction")
+            placeModale.insertAdjacentElement("beforebegin", modaleConteneur);
+    
+            const fermerModale = document.querySelector(".fermeTaModale")
+            fermerModale.addEventListener("click", () => {
+                modaleConteneur.style.display = "none";
+                modaleOuverte = false;
+            });
+            modaleOuverte = true;
 
-const travaux = "";
-//Boucle de génération de la galerie
-async function oeuvres(){
-        travaux = await fetch("http://localhost:5678/api/works")
-        const travauxLisibles = await travaux.json();
+            //Fonction d'affichage de la gallerie
+            let travauxGalerie = JSON.parse(localStorage.getItem("travauxLisibles"));
 
-        for (let i = 0; i < travauxLisibles.length; i++) { 
+            function AfficherGalerieModale(data) {
+                let galerieModale = document.querySelector(".modaleGalerie");
+            
+                if (data && Array.isArray(data)) {
+                    for (let i = 0; i < data.length; i++) {
+                        const cardModale = document.createElement("div");
+                        cardModale.classList.add("cardModale");
+            
+                        const cardImage = document.createElement("img");
+                        cardImage.classList.add("cardImage");
+                        cardImage.src = data[i].imageUrl;
+            
+                        const poubelleContainer = document.createElement("button");
+                        poubelleContainer.classList.add("poubelle");
+                        poubelleContainer.type = "button";
+                        poubelleContainer.id = `poubelle-${i}`;
+            
+                        const poubelleIcon = document.createElement("div");
+                        poubelleIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+            
+                        poubelleContainer.appendChild(poubelleIcon);
+            
+                        cardModale.appendChild(cardImage);
+                        cardModale.appendChild(poubelleContainer);
+            
+                        galerieModale.appendChild(cardModale);
 
-        const card = document.createElement("figure");
-        const cardTitle = document.createElement("figcaption");
-        cardTitle.textContent = travauxLisibles[i].title;
-        const cardImage = document.createElement("img");
-        cardImage.src = travauxLisibles[i].imageUrl;
+                        
+                    }
+                    // Fonctionnement du bouton poubelle
+                    const poubelleElements = document.querySelectorAll(".poubelle");
+                    poubelleElements.forEach((supprimeElement) => {
+                        supprimeElement.addEventListener("click", () => {
+                        const id = supprimeElement.id;
+                        console.log("Vous allez supprimer l'élément ", id)
 
-        card.appendChild(cardImage);
-        card.appendChild(cardTitle);
+                    //    // Vérifiez que vous avez obtenu un ID valide
+                    //    if (id) {
+                    //        // Envoie de la requête DELETE à votre API
+                    //        fetch(`http://localhost:5678/api/works/${id}`, {
+                    //            method: 'DELETE',
+                    //            headers: {
+                    //                'token': localStorage.getItem("token")
+                    //            }
+                    //        })
+                    //        .then((response) => {
+                    //            if (response.status === 200) {
+                    //                // L'élément a été supprimé avec succès, vous pouvez mettre à jour l'affichage ici
+                    //                // Par exemple, en supprimant visuellement l'élément de la page
+                    //                supprimeElement.parentElement.remove();
+                    //            } else {
+                    //                // Gérez les erreurs ou les cas où l'élément n'a pas pu être supprimé
+                    //                console.error("Erreur lors de la suppression de l'élément.");
+                    //            }
+                    //        })
+                    //        .catch((error) => {
+                    //            console.error("Erreur lors de la suppression de l'élément :", error);
+                    //        });
+                    //    } else {
+                    //        console.error("ID non valide.");
+                    //    }
+                        });
+                    });
 
-        galerie.appendChild(card);
-        
-    }
-};
-oeuvres();
+                        //fonctionnement du bouton 'Ajouter une photo'
+                        let modifierModale = document.querySelector(".mangeTaModale");
+                        let ajoutPhotos = document.querySelector(".boutonAjouter");
+                        ajoutPhotos.addEventListener("click", () => {
+                            const modalePageUn = document.querySelector(".pageModaleUn");
+                            const modalePageUnEnString = JSON.stringify(modalePageUn);
+                            sessionStorage.setItem("modalePremierePage", modalePageUnEnString);
+                        const nouveauContenuModale = `
+                        <div class="mangeTaModale">
+                        <button class="laFlecheRetour"><i class="fa-solid fa-arrow-left fa-xl"></i></button>
+                        <button class="fermeTaModale"><i class="fa-solid fa-xmark fa-xl"></i></button>
+                        <h3>Ajout photo</h3>
+                        <form action="#" method="post" id="renseignementsPhotos">
+                            <div class="rectBleu">
+                                <i class="fa-regular fa-image fa-6x"></i>
+                                <button class=boutonBleuAjoutPhoto>+ Ajouter photo</button>
+                                <p>jpg, png : 4mo max</p>
+                            </div>
+                            <label for="title">Titre</label>
+                            <input type="text" name="title" id="title">
+                            <label for="categories">Catégories</label>
+                            <select>
+                                <option value ="noValue"></option>
+                                <option value ="object">Objets</option>
+                                <option value ="appartements">Appartements</option>
+                                <option value ="hotels">Hôtels & restaurants</option>
+                            </select>
+                            <div class="ligneNoire"></div>
+                            <input type="submit" value="Valider" >
+                            </form>
+                        </div>
+                        `
+                        modifierModale.innerHTML = nouveauContenuModale;
+                        //Fonctionnement de la flèche de retour
+                        const baliseRetour = document.querySelector(".laFlecheRetour");
+                        baliseRetour.addEventListener("click", () => {
+                            AfficherGalerieModale(travauxGalerie)
+                        });
+                    })
 
-//création et mise en place des boutons
-let laDivDeTest = document.createElement("div");
-laDivDeTest.classList.add("laDivDeTest")
-let boutonReset = document.createElement("button");
-boutonReset.classList.add("button");
-boutonReset.innerText = "Tous";
-let boutonObjets = document.createElement("button");
-boutonObjets.classList.add("button");
-boutonObjets.innerText = "Objets";
-boutonObjets.setAttribute("id", "btn-objets")
-let boutonAppartements = document.createElement("button");
-boutonAppartements.classList.add("button");
-boutonAppartements.innerText = "Appartements";
-let boutonHetR = document.createElement("button");
-boutonHetR.classList.add("button");
-boutonHetR.innerText = "Hôtels & restaurants";
-
-
-let placeBouton = document.querySelector("#portfolio h2");
-placeBouton.after(laDivDeTest);
-laDivDeTest.appendChild(boutonReset);
-laDivDeTest.appendChild(boutonObjets);
-laDivDeTest.appendChild(boutonAppartements);
-laDivDeTest.appendChild(boutonHetR);
-
-//fonctionnement des boutons
-let baliseObjets = document.getElementById("btn-objets");
-baliseObjets.addEventListener("click", ()=>{
-   const objetsSeuls = oeuvres.filter(function (oeuvres){
-    return oeuvres.category.id === 1;
-   })
-   document.querySelector(".gallery").innerHTML = '';
-   oeuvres(objetsSeuls)
-})
-
-
-
-
+                }
+                else {
+                    console.log("Les données ne sont pas valides ou ne sont pas un tableau.");
+                }}
