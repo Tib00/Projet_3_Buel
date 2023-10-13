@@ -126,8 +126,7 @@ if(localStorage.getItem("token") !== null){
 
     //Mise en place de la barre noire moche
     let laBarreNoireMoche = document.createElement("div");
-    //laBarreNoireMoche.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>     Mode édition`;
-    laBarreNoireMoche.innerHTML = `Ceci est la page travaux !`;
+    laBarreNoireMoche.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>     Mode édition`;
     laBarreNoireMoche.classList.add("barreNoire")
     let placeBarre = document.querySelector("header");
     placeBarre.before(laBarreNoireMoche);
@@ -171,70 +170,67 @@ if(localStorage.getItem("token") !== null){
     modalePageUn.style.display = "none";
     modalePageDeux.style.display = "none";
 
-    //Fonction d'affichage de la gallerie
-    let travauxGalerie = JSON.parse(localStorage.getItem("travauxLisibles"));
-    AfficherGalerieModale(travauxGalerie)
-
     // Fonctionnement du bouton modifier
-    boutonModifier.addEventListener("click", () => {
+    boutonModifier.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        // Lecture du sessionStorage ici
+        const travauxGalerie = JSON.parse(localStorage.getItem("travauxLisibles"));
+
         modale.style.display = "block";
         overlay.style.display = "block";
         modalePageUn.style.display = "block";
         modalePageDeux.style.display = "none";
 
+        // Affichage de la galerie
+        let galerieNulle = document.querySelector(".modaleGalerie")
+        galerieNulle.innerHTML = "";
+        AfficherGalerieModale(travauxGalerie);
     });
+
 
     function AfficherGalerieModale(data) {
-    let galerieModale = document.querySelector(".modaleGalerie");
-
-    if (data && Array.isArray(data)) {
-    for (let i = 0; i < data.length; i++) {
-        const cardModale = document.createElement("div");
-        cardModale.classList.add("cardModale");
-
-        const cardImage = document.createElement("img");
-        cardImage.classList.add("cardImage");
-        cardImage.src = data[i].imageUrl;
-
-        const poubelleContainer = document.createElement("button");
-        poubelleContainer.classList.add("poubelle");
-        poubelleContainer.type = "button";
-        poubelleContainer.id = `${i}`;
-        poubelleContainer.dataset.photoId = data[i].id;
-
-        const poubelleIcon = document.createElement("div");
-        poubelleIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
-
-        poubelleContainer.appendChild(poubelleIcon);
-
-        cardModale.appendChild(cardImage);
-        cardModale.appendChild(poubelleContainer);
-
-        galerieModale.appendChild(cardModale);
+        let galerieModale = document.querySelector(".modaleGalerie");
+    
+        if (data && Array.isArray(data)) {
+            for (let i = 0; i < data.length; i++) {
+                const cardModale = document.createElement("div");
+                cardModale.classList.add("cardModale");
+    
+                const cardImage = document.createElement("img");
+                cardImage.classList.add("cardImage");
+                cardImage.src = data[i].imageUrl;
+    
+                const poubelleContainer = document.createElement("button");
+                poubelleContainer.classList.add("poubelle");
+                poubelleContainer.type = "submit";
+                poubelleContainer.id = `${i}`;
+                poubelleContainer.dataset.photoId = data[i].id;
+    
+                const poubelleIcon = document.createElement("div");
+                poubelleIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+    
+                poubelleContainer.appendChild(poubelleIcon);
+    
+                cardModale.appendChild(cardImage);
+                cardModale.appendChild(poubelleContainer);
+    
+                galerieModale.appendChild(cardModale);
+                
+                // Attacher le gestionnaire d'événements pour ce bouton poubelle
+                attacherGestionnairePoubelle(poubelleContainer);
+            }
         }
     }
-
-    }
-    // Fonctionnement du bouton de fermeture de la modale
-    const fermerModale = document.getElementById("fermeTaModaleUn");
-    fermerModale.addEventListener("click", () => {
-
-        modale.style.display = "none";
-        overlay.style.display = "none";
-    });
-    //const overlayFermetureModale = document.querySelector(".overlayModale");
-    //overlayFermetureModale.addEventListener("click", () => {
-    //    modale.style.display = "none";
-    //    overlay.style.display = "none";
-    //});
-
-    // Fonctionnement du bouton poubelle
-    const token = localStorage.getItem('token');
-    const poubelleElements = document.querySelectorAll(".poubelle");
-    poubelleElements.forEach((supprimeElement) => {
+    
+    // Fonction pour attacher le gestionnaire d'événements pour un bouton poubelle spécifique
+    function attacherGestionnairePoubelle(supprimeElement) {
+        const token = localStorage.getItem('token');
         const photoId = supprimeElement.dataset.photoId; // Obtenez l'ID de la photo associée
-
-        supprimeElement.addEventListener("click", () => {
+    
+        supprimeElement.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
             // Vérifiez que vous avez obtenu un ID valide
             if (photoId) {
                 const parsedPhotoId = parseInt(photoId, 10); // Convertir en entier (base 10)
@@ -246,15 +242,20 @@ if(localStorage.getItem("token") !== null){
                     fetch(`http://localhost:5678/api/works/${parsedPhotoId}`, {
                         method: 'DELETE',
                         headers: {
-                            Authorization : "Bearer " + token,
+                            Authorization: "Bearer " + token,
                         }
                     })
                     .then((response) => {
                         console.log("Headers de la réponse :", response.headers);
-                        if (response.status === 200) {
-                            // L'élément a été supprimé avec succès, vous pouvez mettre à jour l'affichage ici
-                            // Par exemple, en supprimant visuellement l'élément de la page
-                            supprimeElement.parentElement.remove();
+                        if (response.status === 204) {
+                            console.log("Bravo, c'est supprimé !");
+                            // Rafraîchir la liste des travaux après suppression
+                            fetch("http://localhost:5678/api/works")
+                                .then(travaux => travaux.json())
+                                .then(travauxData => {
+                                    travauxLisibles = travauxData;
+                                    localStorage.setItem("travauxLisibles", JSON.stringify(travauxLisibles));
+                                });
                         } else {
                             // Gérez les erreurs ou les cas où l'élément n'a pas pu être supprimé
                             console.error("Erreur lors de la suppression de l'élément.");
@@ -270,11 +271,24 @@ if(localStorage.getItem("token") !== null){
                 console.error("ID non valide.");
             }
         });
-    });
+    }
+        // Fonctionnement du bouton de fermeture de la modale
+        const fermerModale = document.getElementById("fermeTaModaleUn");
+        fermerModale.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            modale.style.display = "none";
+            overlay.style.display = "none";
+        });
+        //const overlayFermetureModale = document.querySelector(".overlayModale");
+        //overlayFermetureModale.addEventListener("click", () => {
+        //    modale.style.display = "none";
+        //    overlay.style.display = "none";
+        //});
 
-    // Fonctionnement du bouton 'Ajouter une photo'
-    let ajoutPhotos = document.querySelector(".boutonAjouter");
-    ajoutPhotos.addEventListener("click", () => {
+        // Fonctionnement du bouton 'Ajouter une photo'
+        let ajoutPhotos = document.querySelector(".boutonAjouter");
+        ajoutPhotos.addEventListener("click", () => {
         modalePageUn.style.display = "none";
         modalePageDeux.style.display = "block";        
 
@@ -284,7 +298,7 @@ if(localStorage.getItem("token") !== null){
             modalePageUn.style.display = "block";
             modalePageDeux.style.display = "none";
         });
-        // Fonctionnement du bouton fermer la modale
+        //// Fonctionnement du bouton fermer la modale
         const fermerModale = document.getElementById("fermeTaModaleDeux");
         fermerModale.addEventListener("click", () => {
         modale.style.display = "none";
@@ -338,9 +352,12 @@ if(localStorage.getItem("token") !== null){
             }
             return NumberId;
         }
-        // Fonction pour gérer la soumission du formulaire
+        /// Fonction pour gérer la soumission du formulaire
         document.getElementById("renseignementsPhotos").addEventListener("submit", (event) => {
             event.preventDefault(); // Empêche le rechargement de la page par défaut
+        
+            //récupère le token
+            const token = localStorage.getItem('token');
 
             // Récupérer les valeurs des champs du formulaire
             const titre = document.getElementById("title").value;
@@ -355,50 +372,45 @@ if(localStorage.getItem("token") !== null){
                 console.error("Le titre n'est pas une chaîne de caractères valide.");
                 return; // Arrêter l'exécution de la fonction
             }
-            
+
             // Méthode pour récupérer l'id de la catégorie sous forme de nombre
             const NumberId = categorieMapping(id);
 
-            // Méthode pour convertir l'image en chaîne de caractères Base64
+            // Vérifier si un fichier a été sélectionné
             if (imageFile) {
-                const reader = new FileReader();
-                reader.onload = function () {
-                    const base64String = reader.result.split(",")[1];
-                    console.log(base64String);
-                    console.log("Le token envoyé est: " + token)
-                    console.log(titre, NumberId)
+                // Créer un objet FormData
+                const formData = new FormData();
 
-                    // Créer un objet FormData pour les autres champs du formulaire
-                    const formData = new FormData();
-                    formData.append("title", titre);
-                    formData.append("category", NumberId);
-                    formData.append("image", base64String);
+                // Ajouter le titre et l'ID de catégorie en tant que champs FormData
+                formData.append("title", titre);
+                formData.append("category", NumberId);
 
-                    // Effectuer la requête POST
-                    fetch("http://localhost:5678/api/works", {
-                        method: "POST",
-                        headers: {
-                            Authorization : "Bearer " + token,
-                        },
-                        body: formData,
+                // Ajouter l'image au formulaire
+                formData.append("image", imageFile);
+
+                // Effectuer la requête POST
+                fetch("http://localhost:5678/api/works", {
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                    body: formData,
+                })
+                    .then((response) => {
+                        if (response.status === 201) {
+                            // La création a réussi, gérer ici la réponse du serveur
+                            console.log("Image ajoutée avec succès !");
+                        } else {
+                            // Gérer d'autres cas de réponse du serveur
+                            console.error("Erreur lors de l'ajout de l'image.");
+                        }
                     })
-                        .then((response) => {
-                            if (response.status === 201) {
-                                // La création a réussi, gérer ici la réponse du serveur
-                                console.log("Image ajoutée avec succès !");
-                            } else {
-                                // Gérer d'autres cas de réponse du serveur
-                                console.error("Erreur lors de l'ajout de l'image.");
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Erreur lors de la requête POST :", error);
-                        });
-                };
-                reader.readAsDataURL(imageFile);
+                    .catch((error) => {
+                        console.error("Erreur lors de la requête POST :", error);
+                    });
             } else {
                 console.error("Veuillez sélectionner une image.");
             }
-        });
-    });
+        })
+    })
 }

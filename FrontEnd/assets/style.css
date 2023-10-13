@@ -293,7 +293,7 @@ a{
 .modaleGalerie{
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
-	grid-template-rows: 125px 125px 125px;
+	grid-template-rows: 125px 125px 125px 125px 125px;
 	gap: 5px;
 	position: absolute;
 	top: 150px;
