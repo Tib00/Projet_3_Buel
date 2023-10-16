@@ -206,72 +206,77 @@ if(localStorage.getItem("token") !== null){
                 poubelleContainer.type = "submit";
                 poubelleContainer.id = `${i}`;
                 poubelleContainer.dataset.photoId = data[i].id;
-    
-                const poubelleIcon = document.createElement("div");
-                poubelleIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
-    
-                poubelleContainer.appendChild(poubelleIcon);
+                poubelleContainer.innerHTML = `<div><i class="fa-solid fa-trash-can"></i></div>`; 
     
                 cardModale.appendChild(cardImage);
                 cardModale.appendChild(poubelleContainer);
     
                 galerieModale.appendChild(cardModale);
-                
-                // Attacher le gestionnaire d'événements pour ce bouton poubelle
+    
+                // Fonction pour attacher le gestionnaire d'événements pour ce bouton poubelle
                 attacherGestionnairePoubelle(poubelleContainer);
             }
         }
-    }
+        
+        // Fonction pour attacher le gestionnaire d'événements pour un bouton poubelle spécifique
+        function attacherGestionnairePoubelle(supprimeElement) {
+            const token = localStorage.getItem('token');
+            const photoId = supprimeElement.dataset.photoId; // Obtenez l'ID de la photo associée
     
-    // Fonction pour attacher le gestionnaire d'événements pour un bouton poubelle spécifique
-    function attacherGestionnairePoubelle(supprimeElement) {
-        const token = localStorage.getItem('token');
-        const photoId = supprimeElement.dataset.photoId; // Obtenez l'ID de la photo associée
-    
-        supprimeElement.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            // Vérifiez que vous avez obtenu un ID valide
-            if (photoId) {
-                const parsedPhotoId = parseInt(photoId, 10); // Convertir en entier (base 10)
-                if (!isNaN(parsedPhotoId)) { // Vérifier si la conversion est réussie
-                    console.log("Headers de la requête :", {
-                        Authorization: "Bearer " + token,
-                    });
-                    // Envoie de la requête DELETE à votre API
-                    fetch(`http://localhost:5678/api/works/${parsedPhotoId}`, {
-                        method: 'DELETE',
-                        headers: {
+            supprimeElement.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                // Vérifiez que vous avez obtenu un ID valide
+                if (photoId) {
+                    const parsedPhotoId = parseInt(photoId, 10); // Convertir en entier (base 10)
+                    if (!isNaN(parsedPhotoId)) { // Vérifier si la conversion est réussie
+                        console.log("Headers de la requête :", {
                             Authorization: "Bearer " + token,
-                        }
-                    })
-                    .then((response) => {
-                        console.log("Headers de la réponse :", response.headers);
-                        if (response.status === 204) {
-                            console.log("Bravo, c'est supprimé !");
-                            // Rafraîchir la liste des travaux après suppression
-                            fetch("http://localhost:5678/api/works")
-                                .then(travaux => travaux.json())
-                                .then(travauxData => {
-                                    travauxLisibles = travauxData;
-                                    localStorage.setItem("travauxLisibles", JSON.stringify(travauxLisibles));
-                                });
-                        } else {
-                            // Gérez les erreurs ou les cas où l'élément n'a pas pu être supprimé
-                            console.error("Erreur lors de la suppression de l'élément.");
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Erreur lors de la suppression de l'élément :", error);
-                    });
+                        });
+                        
+                        // Envoie de la requête DELETE à votre API
+                        fetch(`http://localhost:5678/api/works/${parsedPhotoId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                Authorization: "Bearer " + token,
+                            }
+                        })
+                        .then((response) => {
+                            console.log("Headers de la réponse :", response.headers);
+                            if (response.status === 204) {
+                                console.log("Bravo, c'est supprimé !");
+                                // Rafraîchir la liste des travaux après suppression
+                                fetch("http://localhost:5678/api/works")
+                                    .then(travaux => travaux.json())
+                                    .then(travauxData => {
+                                        travauxLisibles = travauxData;
+                                        localStorage.setItem("travauxLisibles", JSON.stringify(travauxLisibles));
+                                        let galerieModale = document.querySelector(".modaleGalerie");
+                                        galerieModale.innerHTML = "";
+                                        AfficherGalerieModale(travauxLisibles); // Réafficher la galerie
+                                        oeuvres(travauxLisibles)
+
+                                    });
+                            } else {
+                                // Gérez les erreurs ou les cas où l'élément n'a pas pu être supprimé
+                                console.error("Erreur lors de la suppression de l'élément.");
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Erreur lors de la suppression de l'élément :", error);
+                        });
+                    } else {
+                        console.error("ID non valide : La conversion en entier a échoué.");
+                    }
                 } else {
-                    console.error("ID non valide : La conversion en entier a échoué.");
+                    console.error("ID non valide.");
                 }
-            } else {
-                console.error("ID non valide.");
-            }
-        });
+            });
+        }
     }
+
+
         // Fonctionnement du bouton de fermeture de la modale
         const fermerModale = document.getElementById("fermeTaModaleUn");
         fermerModale.addEventListener("click", (event) => {
@@ -400,6 +405,30 @@ if(localStorage.getItem("token") !== null){
                         if (response.status === 201) {
                             // La création a réussi, gérer ici la réponse du serveur
                             console.log("Image ajoutée avec succès !");
+                            // Rafraîchir la galerie modale après l'ajout d'une image
+                            fetch("http://localhost:5678/api/works")
+                            .then(travaux => travaux.json())
+                            .then(travauxData => {
+                                travauxLisibles = travauxData;
+                                localStorage.setItem("travauxLisibles", JSON.stringify(travauxLisibles));
+                                oeuvres(travauxLisibles); // Réafficher la galerie
+
+                                const modale = document.querySelector(".modale");
+                                const overlay = document.querySelector(".overlayModale");
+                                const modalePageUn = document.getElementById("pageModaleUn")
+                                const modalePageDeux = document.getElementById("pageModaleDeux")
+                                const placePhoto = document.querySelector(".placePhoto");
+                                placePhoto.innerHTML = `<i class="fa-regular fa-image fa-6x"></i>`; // Effacez le contenu précédent
+                                const titrePhoto = document.getElementById("titleImg");
+                                titrePhoto.innerHTML = "";
+                                const categoryImage = document.getElementById("categorieImg");
+                                categoryImage.innerHTML = "";
+                                modale.style.display = "none";
+                                overlay.style.display = "none";
+                                modalePageUn.style.display = "none";
+                                modalePageDeux.style.display = "none";
+                            });
+
                         } else {
                             // Gérer d'autres cas de réponse du serveur
                             console.error("Erreur lors de l'ajout de l'image.");
@@ -413,4 +442,18 @@ if(localStorage.getItem("token") !== null){
             }
         })
     })
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("renseignementsPhotos");
+        const titleInput = document.getElementById("title");
+        const categoryInput = document.getElementById("categoryElement");
+        const submitButton = document.getElementById("validationFinale");
+      
+        form.addEventListener("input", function () {
+          if (titleInput.value && categoryInput.value !== "noValue") {
+            submitButton.style.background = "#1D6154"; // Change la couleur du bouton en vert
+          } else {
+            submitButton.style.background = "#A7A7A7"; // Change la couleur du bouton en gris
+          }
+        });
+      });
 }

@@ -87,7 +87,7 @@ let baliseSubmit = document.querySelector("form")
                         localStorage.setItem("token", accessCode.token);
                         
                         // Rediriger après avoir ajouté le token au localStorage
-                        window.location.assign("http://127.0.0.1:5500/Portfolio-architecte-sophie-bluel/FrontEnd/index.html");
+                        window.location.href = 'index.html';
 
                 });
 

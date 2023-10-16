@@ -129,12 +129,15 @@ li:hover {
 	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 400px 400px 400px 400px 400px;
 	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+	grid-row-gap: 30px;
 }
 
 .gallery img {
-	width: 100%;
+	height: 95%;
+	width: 95%;
+	object-fit: cover;
 
 }
 #contact {
@@ -250,6 +253,10 @@ a{
 .btn-modifier:hover, .logout:hover, .fermeTaModale:hover, .poubelle:hover, .boutonAjouter:hover, .laFlecheRetour:hover, .boutonBleuAjoutPhoto:hover, #renseignementsPhotos input[type="submit"]:hover{
 	cursor: pointer;
 }
+
+#footerLoginPage{
+	margin-top: 50vh;
+}
 /*************************************** MODALE ! ************************/
 .modaleContainer{
 	position:fixed;
@@ -291,13 +298,12 @@ a{
 	right: 30px;
 }
 .modaleGalerie{
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
-	grid-template-rows: 125px 125px 125px 125px 125px;
-	gap: 5px;
-	position: absolute;
-	top: 150px;
-	left: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 125px 125px 125px;
+    position: absolute;
+    top: 100px;
+    left: 75px;
 }
 
 h3{
