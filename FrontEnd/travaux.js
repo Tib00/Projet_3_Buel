@@ -404,6 +404,30 @@ if(localStorage.getItem("token") !== null){
                         if (response.status === 201) {
                             // La création a réussi, gérer ici la réponse du serveur
                             console.log("Image ajoutée avec succès !");
+                            // Rafraîchir la galerie modale après l'ajout d'une image
+                            fetch("http://localhost:5678/api/works")
+                            .then(travaux => travaux.json())
+                            .then(travauxData => {
+                                travauxLisibles = travauxData;
+                                localStorage.setItem("travauxLisibles", JSON.stringify(travauxLisibles));
+                                oeuvres(travauxLisibles); // Réafficher la galerie
+
+                                const modale = document.querySelector(".modale");
+                                const overlay = document.querySelector(".overlayModale");
+                                const modalePageUn = document.getElementById("pageModaleUn")
+                                const modalePageDeux = document.getElementById("pageModaleDeux")
+                                const placePhoto = document.querySelector(".placePhoto");
+                                placePhoto.innerHTML = `<i class="fa-regular fa-image fa-6x"></i>`; // Effacez le contenu précédent
+                                const titrePhoto = document.getElementById("title");
+                                titrePhoto.value = ""; // Réinitialiser la valeur du champ de titre à une chaîne vide
+                                const categoryElem = document.getElementById("categoryElement")
+                                categoryElem.selectedIndex = 0;
+                                modale.style.display = "none";
+                                overlay.style.display = "none";
+                                modalePageUn.style.display = "none";
+                                modalePageDeux.style.display = "none";
+                            });
+
                         } else {
                             // Gérer d'autres cas de réponse du serveur
                             console.error("Erreur lors de l'ajout de l'image.");
@@ -417,4 +441,18 @@ if(localStorage.getItem("token") !== null){
             }
         })
     })
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("renseignementsPhotos");
+        const titleInput = document.getElementById("title");
+        const categoryInput = document.getElementById("categoryElement");
+        const submitButton = document.getElementById("validationFinale");
+      
+        form.addEventListener("input", function () {
+          if (titleInput.value && categoryInput.value !== "noValue") {
+            submitButton.style.background = "#1D6154"; // Change la couleur du bouton en vert
+          } else {
+            submitButton.style.background = "#A7A7A7"; // Change la couleur du bouton en gris
+          }
+        });
+      });
 }

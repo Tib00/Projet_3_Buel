@@ -458,7 +458,7 @@ h3{
 	top: 403px;
 	left: 107px;
 }
-#renseignementsPhotos input[type="submit"] {
+#renseignementsPhotos input[type="button"] {
 	position: absolute;
 	bottom: 15px;
 	height: 36px;
