@@ -452,7 +452,7 @@ if(localStorage.getItem("token") !== null){
             } else {
                 console.error("Veuillez sélectionner une image.");
             }
-        });
+        },once);
     })
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("renseignementsPhotos");
