@@ -284,17 +284,12 @@ if(localStorage.getItem("token") !== null){
             modale.style.display = "none";
             overlay.style.display = "none";
         });
-        //const overlayFermetureModale = document.querySelector(".overlayModale");
-        //overlayFermetureModale.addEventListener("click", () => {
-        //    modale.style.display = "none";
-        //    overlay.style.display = "none";
-        //});
 
         // Fonctionnement du bouton 'Ajouter une photo'
         let ajoutPhotos = document.querySelector(".boutonAjouter");
         ajoutPhotos.addEventListener("click", () => {
         modalePageUn.style.display = "none";
-        modalePageDeux.style.display = "block";        
+        modalePageDeux.style.display = "block";     
 
         // Fonctionnement de la flèche de retour
         const baliseRetour = document.querySelector(".laFlecheRetour");
@@ -310,32 +305,39 @@ if(localStorage.getItem("token") !== null){
         });
         //Fonctionnement du bouton bleu "+Ajouter une photo"
         const telechargerBtn = document.querySelector("#telechargerBtn");
+        const input = document.getElementById("selectFile");
+
+        const once = {
+            once: true, 
+         }
         telechargerBtn.addEventListener("click", (event) => {
+            console.trace()
+            console.log("Le bouton bleu est cliqué")
             event.preventDefault();
             nettoyerURLs();
-            telechargerFichier();
-        });
-        function telechargerFichier() {
-            const input = document.getElementById("selectFile");
+            telechargerFichier();                       
             
-                // Écoutez l'événement "change" de l'élément input de type fichier
-                input.addEventListener("change", () => {
-                const fichier = input.files[0]; // Récupérez le fichier sélectionné
-
-                if (fichier) {
-                    // Créez un élément img pour afficher l'image
-                    const imgElement = document.createElement("img");
-                    imgElement.classList.add("imageImportee")
-                    imgElement.src = URL.createObjectURL(fichier);
-
-                    // Remplacez l'élément actuel par l'élément img
-                    const placePhoto = document.querySelector(".placePhoto");
-                    placePhoto.innerHTML = ""; // Effacez le contenu précédent
-                    placePhoto.appendChild(imgElement);
-                    }
-                });
+        },once);
+        function telechargerFichier() {
             
             input.click(); // Déclenche la boîte de dialogue de sélection de fichiers
+            // Écoutez l'événement "change" de l'élément input de type fichier
+            input.addEventListener("change", () => {
+            const fichier = input.files[0]; // Récupérez le fichier sélectionné
+
+            if (fichier) {
+                // Créez un élément img pour afficher l'image
+                const imgElement = document.createElement("img");
+                imgElement.classList.add("imageImportee")
+                imgElement.src = URL.createObjectURL(fichier);
+
+                // Remplacez l'élément actuel par l'élément img
+                const placePhoto = document.querySelector(".placePhoto");
+                placePhoto.innerHTML = ""; // Effacez le contenu précédent
+                placePhoto.appendChild(imgElement);
+                }
+            });
+
         }
         function nettoyerURLs() {
             const urls = document.querySelectorAll('a');
@@ -357,10 +359,16 @@ if(localStorage.getItem("token") !== null){
             return NumberId;
         }
         /// Fonction pour gérer la soumission du formulaire
-        document.getElementById("renseignementsPhotos").addEventListener("submit", (event) => {
-            event.preventDefault(); // Empêche le rechargement de la page par défaut
-        
-            //récupère le token
+////////////////////////////////////////// LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL /////////////////////////////////////////
+        // Obtenez la référence de l'élément "validationFinaleBtn" une seule fois
+        const validationFinaleBtn = document.getElementById("validationFinale");
+
+        // Ajoutez un seul écouteur d'événement qui gère à la fois le clic sur le bouton et la soumission du formulaire
+        validationFinaleBtn.addEventListener("click", () => {
+
+            console.log("validationFinaleBtn");
+
+            // Récupérez le token
             const token = localStorage.getItem('token');
 
             // Récupérer les valeurs des champs du formulaire
@@ -406,27 +414,27 @@ if(localStorage.getItem("token") !== null){
                             console.log("Image ajoutée avec succès !");
                             // Rafraîchir la galerie modale après l'ajout d'une image
                             fetch("http://localhost:5678/api/works")
-                            .then(travaux => travaux.json())
-                            .then(travauxData => {
-                                travauxLisibles = travauxData;
-                                localStorage.setItem("travauxLisibles", JSON.stringify(travauxLisibles));
-                                oeuvres(travauxLisibles); // Réafficher la galerie
+                                .then(travaux => travaux.json())
+                                .then(travauxData => {
+                                    travauxLisibles = travauxData;
+                                    localStorage.setItem("travauxLisibles", JSON.stringify(travauxLisibles));
+                                    oeuvres(travauxLisibles); // Réafficher la galerie
 
-                                const modale = document.querySelector(".modale");
-                                const overlay = document.querySelector(".overlayModale");
-                                const modalePageUn = document.getElementById("pageModaleUn")
-                                const modalePageDeux = document.getElementById("pageModaleDeux")
-                                const placePhoto = document.querySelector(".placePhoto");
-                                placePhoto.innerHTML = `<i class="fa-regular fa-image fa-6x"></i>`; // Effacez le contenu précédent
-                                const titrePhoto = document.getElementById("title");
-                                titrePhoto.value = ""; // Réinitialiser la valeur du champ de titre à une chaîne vide
-                                const categoryElem = document.getElementById("categoryElement")
-                                categoryElem.selectedIndex = 0;
-                                modale.style.display = "none";
-                                overlay.style.display = "none";
-                                modalePageUn.style.display = "none";
-                                modalePageDeux.style.display = "none";
-                            });
+                                    const modale = document.querySelector(".modale");
+                                    const overlay = document.querySelector(".overlayModale");
+                                    const modalePageUn = document.getElementById("pageModaleUn");
+                                    const modalePageDeux = document.getElementById("pageModaleDeux");
+                                    const placePhoto = document.querySelector(".placePhoto");
+                                    placePhoto.innerHTML = `<i class="fa-regular fa-image fa-6x"></i>`; // Effacez le contenu précédent
+                                    const titrePhoto = document.getElementById("title");
+                                    titrePhoto.value = ""; // Réinitialiser la valeur du champ de titre à une chaîne vide
+                                    const categoryElem = document.getElementById("categoryElement");
+                                    categoryElem.selectedIndex = 0;
+                                    modale.style.display = "none";
+                                    overlay.style.display = "none";
+                                    modalePageUn.style.display = "none";
+                                    modalePageDeux.style.display = "none";
+                                });
 
                         } else {
                             // Gérer d'autres cas de réponse du serveur
@@ -439,7 +447,7 @@ if(localStorage.getItem("token") !== null){
             } else {
                 console.error("Veuillez sélectionner une image.");
             }
-        })
+        },once);
     })
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("renseignementsPhotos");

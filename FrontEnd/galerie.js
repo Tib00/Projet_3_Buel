@@ -123,7 +123,9 @@ modalePageDeux.style.display = "none";
 
 //Vérification du token en localStorage
 if(localStorage.getItem("token") !== null){
-
+    const once = {
+        once: true, 
+     }
     //Mise en place de la barre noire moche
     let laBarreNoireMoche = document.createElement("div");
     laBarreNoireMoche.innerHTML = `<i class="fa-regular fa-pen-to-square"></i>     Mode édition`;
@@ -283,38 +285,31 @@ if(localStorage.getItem("token") !== null){
             event.stopPropagation();
             modale.style.display = "none";
             overlay.style.display = "none";
-        });
-        //const overlayFermetureModale = document.querySelector(".overlayModale");
-        //overlayFermetureModale.addEventListener("click", () => {
-        //    modale.style.display = "none";
-        //    overlay.style.display = "none";
-        //});
+        },once);
 
         // Fonctionnement du bouton 'Ajouter une photo'
         let ajoutPhotos = document.querySelector(".boutonAjouter");
         ajoutPhotos.addEventListener("click", () => {
         modalePageUn.style.display = "none";
-        modalePageDeux.style.display = "block";        
+        modalePageDeux.style.display = "block";     
 
         // Fonctionnement de la flèche de retour
         const baliseRetour = document.querySelector(".laFlecheRetour");
         baliseRetour.addEventListener("click", () => {
             modalePageUn.style.display = "block";
             modalePageDeux.style.display = "none";
-        });
+        },once);
         //// Fonctionnement du bouton fermer la modale
         const fermerModale = document.getElementById("fermeTaModaleDeux");
         fermerModale.addEventListener("click", () => {
         modale.style.display = "none";
         overlay.style.display = "none";
-        });
+        },once);
         //Fonctionnement du bouton bleu "+Ajouter une photo"
         const telechargerBtn = document.querySelector("#telechargerBtn");
         const input = document.getElementById("selectFile");
 
-        const once = {
-            once: true, 
-         }
+
         telechargerBtn.addEventListener("click", (event) => {
             console.trace()
             console.log("Le bouton bleu est cliqué")

@@ -27,7 +27,7 @@
 				<button class="laFlecheRetour"><i class="fa-solid fa-arrow-left fa-xl"></i></button>
 				<button class="fermeTaModale" id="fermeTaModaleDeux"><i class="fa-solid fa-xmark fa-xl"></i></button>
 				<h3>Ajout photo</h3>
-				<form action="" method="post" enctype="multipart/form-data" id="renseignementsPhotos" >
+				<form method="post" enctype="multipart/form-data" id="renseignementsPhotos" >
 					<div class="rectBleu">
 						<div class="placePhoto">
 							<i class="fa-regular fa-image fa-6x"></i>
@@ -38,9 +38,9 @@
 					</div>
 					<label for="title" id="titleImg">Titre</label>
 					<input type="text" name="title" id="title">
-					<label for="categories" id="categorieImg">Catégories</label>
+					<label id="categorieImg">Catégories</label>
 					<select id="categoryElement">
-						<option value="noValue"></option>
+						<option value="noValue">&nbsp;</option>
 						<option value="object">Objets</option>
 						<option value="appartements">Appartements</option>
 						<option value="hotels">Hôtels & restaurants</option>
