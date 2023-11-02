@@ -202,7 +202,8 @@ footer nav ul {
 	background-color: #1D6154;
 	color: #FFFEF8;
 }
-.laDivDeTest{
+.placeButton{
+	padding: 20px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -226,6 +227,9 @@ a{
 }
 .barreNoire{
 	border: 1px black solid ;
+	width: 100%;
+	margin: 0;
+	padding: 0;
 	font-family: 'Work sans';
 	color: white;
 	background-color: #000000;
@@ -235,9 +239,15 @@ a{
 	align-items: center;
 	height: 60px;
 }
+.projets{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
 .btn-modifier{
 	border: none;
-	margin: 25px;
+	margin: 0px 0px 25px 25px;
 	background-color: #FFFEF8;
 	font-family: 'Work sans';
 	color: #000000;
@@ -258,14 +268,11 @@ a{
 	margin-top: 50vh;
 }
 /*************************************** MODALE ! ************************/
-.modaleContainer{
+.modalOverlay {
 	position:fixed;
 	top: 0;
 	width: 100vw;
 	height: 100vh;
-}
-
-.overlayModale {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -277,8 +284,7 @@ a{
     background-color: rgba(0, 0, 0, 0.3); /* Couleur de fond grise avec une opacité de 30% */
 }
 
-.modaleDesign{
-	width: 95%;
+.modalWindow{
 	height: 688px;
 	width: 630px;
 	background-color: #FFFEF8;
@@ -289,21 +295,12 @@ a{
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
-
 .fermeTaModale{
 	background-color: #FFFEF8;
 	border: none;
 	position: absolute;
 	top: 25px;
 	right: 30px;
-}
-.modaleGalerie{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 125px 125px 125px;
-    position: absolute;
-    top: 100px;
-    left: 75px;
 }
 
 h3{
@@ -318,12 +315,26 @@ h3{
 	top: 60px;
 	left: 215px
 }
-.ligneNoire{
-	width: 75%;
+.modalBody{
 	border-bottom: 1px #B3B3B3 solid;
 	position: absolute;
-	top: 570px;
-	left: 75px;
+	top: 125px;
+	width: 490px;
+	margin: 0px 70px 0px 70px ;
+	height: 460px;
+	display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr ;
+    grid-template-rows: 140px 140px 140px;
+}
+.cardModale {
+    position: relative;
+    display: inline-block; /* Pour permettre aux éléments de s'empiler correctement */
+    margin: 10px; /* Espace entre les images */
+}
+.cardImage {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
 }
 .boutonAjouter{
 	position: absolute;
@@ -339,16 +350,7 @@ h3{
 	text-align: center;
 	border-radius: 60px ;
 }
-.cardModale {
-    position: relative;
-    display: inline-block; /* Pour permettre aux éléments de s'empiler correctement */
-    margin: 10px; /* Espace entre les images */
-}
-.cardImage {
-	height: 100%;
-	width: 100%;
-	object-fit: cover;
-}
+
 .poubelle {
     position: absolute;
     top: 5px;
