@@ -8,17 +8,23 @@ fetch("http://localhost:5678/api/works")
         travauxLisibles = travauxData; 
         localStorage.setItem("travauxLisibles", JSON.stringify(travauxLisibles));
         genererGaleriePrincipale(travauxLisibles);
+    })
+    .catch(error => {
+        console.error('Une erreur s\'est produite lors de la récupération des données :', error);
     });
 
 let categoriesLisibles;
 
 //Récupération des catégories dans l'API et stockage dans le LocalStorage
 fetch("http://localhost:5678/api/categories")
-.then(categories => categories.json())
-.then(categoriesData => {
-    categoriesLisibles = categoriesData; 
-    localStorage.setItem("categoriesLisibles", JSON.stringify(categoriesLisibles));
-});
+    .then(categories => categories.json())
+    .then(categoriesData => {
+        categoriesLisibles = categoriesData; 
+        localStorage.setItem("categoriesLisibles", JSON.stringify(categoriesLisibles));
+    })
+    .catch(error => {
+        console.error('Une erreur s\'est produite lors de la récupération des catégories :', error);
+    });
 
 //////////// Implantation des différents boutons de manipulation de la galerie /////
 let boutonReset = document.createElement("button");
