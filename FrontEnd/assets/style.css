@@ -193,14 +193,19 @@ footer nav ul {
 	border-radius: 60px;
 	background-color: #FFFEF8;
 	color: #1D6154;
-	padding: 20px 50px;
+	padding: 8px 15px;
 	font-family: 'Syne';
 	font-weight: 700;
+	font-size: large;
 	margin: 0px 5px
 }
 .button:hover{
 	background-color: #1D6154;
 	color: #FFFEF8;
+}
+.button.active {
+    background-color: #1D6154;
+    color: #FFFEF8;
 }
 .placeButton{
 	padding: 20px;
@@ -476,4 +481,13 @@ h3{
 	position: absolute;
 	top: 580px;
 	left: 195px;
+}
+.errorMsg {
+    color: red; /* Définissez la couleur de texte que vous souhaitez */
+    font-weight: bold; /* Définissez la graisse de police que vous souhaitez */
+	font-size: larger;
+    text-align: center;
+}
+.mdp{
+	text-decoration: none;
 }

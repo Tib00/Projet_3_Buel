@@ -15,14 +15,13 @@ function supprimerMessagesErreur() {
     });
 }
 
-//fonction de génération de la balise d'erreur
-function genererMessageErreur(){
-    console.log("Erreur dans l’identifiant ou le mot de passe");
-    let baliseErreur = document.createElement("p");
-    baliseErreur.classList.add("error")
-    baliseErreur.textContent = "Erreur dans l’identifiant ou le mot de passe";
-    let placeBalise = document.getElementById("mdp");
-    placeBalise.appendChild(baliseErreur)
+// Fonction de génération de la balise d'erreur
+function genererMessageErreur() {
+    // Sélection de la balise <p> avec la classe "errorMsg"
+    let baliseErreur = document.querySelector(".errorMsg");
+
+    // Modification de la visibilité pour la rendre visible
+    baliseErreur.style.visibility = "visible";
 }
 
 //Fonctionnement du bouton envoyer

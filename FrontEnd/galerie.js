@@ -57,6 +57,12 @@ baliseObjets.addEventListener("click", () => {
     if (travauxLisibles) {
         const objets = travauxLisibles.filter(objet => objet.categoryId === 1);
         genererGaleriePrincipale(objets);
+        // Ajout de la classe "active" au bouton cliqué
+        baliseObjets.classList.add("active");
+        // Suppression de la classe "active" des autres boutons
+        baliseAppartements.classList.remove("active");
+        baliseHetR.classList.remove("active");
+        baliseReset.classList.remove("active");
     }
 });
 
@@ -64,7 +70,13 @@ let baliseAppartements = document.getElementById("btn-appartements");
 baliseAppartements.addEventListener("click", ()=>{
         if (travauxLisibles) {
             const appartements = travauxLisibles.filter(appartements => appartements.categoryId === 2);
-            genererGaleriePrincipale(appartements); 
+            genererGaleriePrincipale(appartements);
+            // Ajout de la classe "active" au bouton cliqué
+            baliseAppartements.classList.add("active");
+            // Suppression de la classe "active" des autres boutons
+            baliseObjets.classList.remove("active");
+            baliseHetR.classList.remove("active");
+            baliseReset.classList.remove("active"); 
         }
 });
 
@@ -72,13 +84,24 @@ let baliseHetR = document.getElementById("btn-hetr");
 baliseHetR.addEventListener("click", ()=>{
     if (travauxLisibles) {
         const hetr = travauxLisibles.filter(hetr => hetr.categoryId === 3);
-        genererGaleriePrincipale(hetr); 
+        genererGaleriePrincipale(hetr);
+        // Ajout de la classe "active" au bouton cliqué
+        baliseHetR.classList.add("active");
+        // Suppression de la classe "active" des autres boutons
+        baliseObjets.classList.remove("active");
+        baliseAppartements.classList.remove("active");
+        baliseReset.classList.remove("active");  
     }
 });
 
 let baliseReset = document.getElementById("btn-reset");
 baliseReset.addEventListener("click", ()=>{
     genererGaleriePrincipale(travauxLisibles);
+    baliseReset.classList.add("active");
+    // Suppression de la classe "active" des autres boutons
+    baliseObjets.classList.remove("active");
+    baliseAppartements.classList.remove("active");
+    baliseHetR.classList.remove("active"); 
 });
 
 //Implantation des liens
@@ -397,6 +420,7 @@ validationFinaleBtn.addEventListener("click", () => {
                             titrePhoto.value = ""; // Réinitialiser la valeur du champ de titre à une chaîne vide
                             const categoryElem = document.getElementById("categoryElement");
                             categoryElem.selectedIndex = 0;
+                            imageInput.value = null;
                             const modalOverlay = document.querySelector(".modalOverlay")
                             const modalWindow  = document.querySelector(".modalWindow")
                             modalOverlay.style.visibility = "hidden"
@@ -411,14 +435,14 @@ validationFinaleBtn.addEventListener("click", () => {
 
                 } else {
                     // Gérer d'autres cas de réponse du serveur
-                    console.error("Erreur lors de l'ajout de l'image.");
+                    alert("Erreur lors de l'ajout de l'image.");
                 }
             })
             .catch((error) => {
                 console.error("Erreur lors de la requête POST :", error);
             });
     } else {
-        console.error("Veuillez sélectionner une image.");
+        alert("Veuillez sélectionner une image.");
     }
 });
 
