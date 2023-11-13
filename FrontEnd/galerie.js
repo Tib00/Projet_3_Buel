@@ -29,6 +29,7 @@ fetch("http://localhost:5678/api/categories")
 //////////// Implantation des différents boutons de manipulation de la galerie /////
 let boutonReset = document.createElement("button");
 boutonReset.classList.add("button");
+boutonReset.classList.add("button", "active");
 boutonReset.innerText = "Tous";
 boutonReset.setAttribute("id", "btn-reset")
 let boutonObjets = document.createElement("button");
