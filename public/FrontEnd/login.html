@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sophie Bluel - Architecte d'intérieur - login page</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<meta name="description" content="">
+	<link rel="stylesheet" href="./assets/style.css">
+    <script src="verifLogin.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+        <nav>
+            <ul>
+            </ul>
+        </nav>
+    </header>
+    <main >
+        <section id="contact">
+            <h2>Log In</h2>
+            <form>
+                <label>E-mail</label><br>
+                <input type="email" id="mail"><br>
+                <label>Mot de passe</label><br>
+                <input type="password" id="pass" ><br>
+                <input type="submit" value="Envoyer" id="btnLogin">
+                <a href="#" id="mdp">Mot de passe oublié</a>
+            </form>
+        </section>
+        <p class="errorMsg" style="visibility: hidden;">Erreur dans l’identifiant ou le mot de passe</p>
+    </main>
+    <footer id="footerLoginPage">
+        <nav>
+            <ul>
+                <li>Mentions Légales</li>
+            </ul>
+        </nav>
+    </footer>
+</body>
+</html>
